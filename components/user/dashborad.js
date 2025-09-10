@@ -13,9 +13,7 @@ import toast from "react-hot-toast"
 import CustomForm from "../commons/CustomForm"
 import { UserDashboardSkeleton } from "../skeletons/skeletons"
 import MultipleImageInput from "../commons/multipleImageInput"
-import { normalizeAndUploadImage } from "@/app/helper/helper"
-import imageCompression from "browser-image-compression";
-
+import imageCompression from 'browser-image-compression';
 
 
 export default function UserDashboard() {
@@ -35,39 +33,50 @@ export default function UserDashboard() {
     let imageUrl = formData.image;
 
     if (imageUrl && typeof imageUrl !== "string" && imageUrl.originFileObj) {
-      // Compress the image before uploading
-      const options = {
-        maxSizeMB: 0.1, // 100KB
-        maxWidthOrHeight: 1200, // Resize image if bigger than 1200px
-        useWebWorker: true,
-        fileType: "image/png", // Convert to PNG
-      };
-
       try {
-        const compressedFile = await imageCompression(
-          imageUrl.originFileObj,
-          options
-        );
+        let file = imageUrl.originFileObj;
 
-        // Upload compressed image
+        if (!(file instanceof File)) {
+          file = new File([file], file.name || "upload.png", {
+            type: file.type || "image/png",
+          });
+        }
+
+        const options = {
+          maxSizeMB: 0.1, // ~100KB
+          maxWidthOrHeight: 1200,
+          useWebWorker: true,
+          fileType: "image/png",
+        };
+
+        // Compress
+        const compressedFile = await imageCompression(file, options);
+
+        // Upload compressed file
         const result = await postSingleImage({ image: compressedFile });
-        imageUrl = result?.data.image || result;
-      } catch (error) {
-        console.error("Image compression failed:", error);
-        toast("Failed to compress image");
-        return;
+
+        // ✅ Force imageUrl to be string
+        imageUrl =
+          typeof result?.data?.image === "string"
+            ? result.data.image
+            : typeof result === "string"
+              ? result
+              : "";
+      } catch (err) {
+        console.error("Image compression error:", err);
+        toast.error("Failed to compress image");
       }
     }
 
-    // Save payload
-    const payload = { ...formData, image: imageUrl };
-    const { success, message, data, errorMessage } = await updateUser(payload);
+    const payload = { ...formData, image: imageUrl }; // ✅ image must be string
+
+    const { success, message, errorMessage } = await updateUser(payload);
 
     if (success) {
-      toast(message);
+      toast.success(message);
       getUser();
     } else {
-      toast(errorMessage);
+      toast.error(errorMessage);
     }
 
     setIsEditing(false);
@@ -121,7 +130,7 @@ export default function UserDashboard() {
           <div className="flex items-center lg:space-x-4 space-x-2">
             <Avatar className="lg:h-28 lg:w-28 h-20 w-20">
               <AvatarImage
-                src={formData?.image}
+                src={formData?.image || "/placeholder.svg"}
                 alt={formData?.name}
               />
               <AvatarFallback className="subtitleText">
