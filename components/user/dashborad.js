@@ -14,6 +14,7 @@ import CustomForm from "../commons/CustomForm"
 import { UserDashboardSkeleton } from "../skeletons/skeletons"
 import MultipleImageInput from "../commons/multipleImageInput"
 import { normalizeAndUploadImage } from "@/app/helper/helper"
+import imageCompression from "browser-image-compression";
 
 
 
@@ -32,19 +33,43 @@ export default function UserDashboard() {
 
   const handleSave = async () => {
     let imageUrl = formData.image;
+
     if (imageUrl && typeof imageUrl !== "string" && imageUrl.originFileObj) {
-      const result = await postSingleImage({ image: imageUrl.originFileObj });
-      imageUrl = result?.data.image || result;
+      // Compress the image before uploading
+      const options = {
+        maxSizeMB: 0.1, // 100KB
+        maxWidthOrHeight: 1200, // Resize image if bigger than 1200px
+        useWebWorker: true,
+        fileType: "image/png", // Convert to PNG
+      };
+
+      try {
+        const compressedFile = await imageCompression(
+          imageUrl.originFileObj,
+          options
+        );
+
+        // Upload compressed image
+        const result = await postSingleImage({ image: compressedFile });
+        imageUrl = result?.data.image || result;
+      } catch (error) {
+        console.error("Image compression failed:", error);
+        toast("Failed to compress image");
+        return;
+      }
     }
 
+    // Save payload
     const payload = { ...formData, image: imageUrl };
     const { success, message, data, errorMessage } = await updateUser(payload);
+
     if (success) {
       toast(message);
       getUser();
     } else {
       toast(errorMessage);
     }
+
     setIsEditing(false);
   };
 
