@@ -130,7 +130,7 @@ export default function UserDashboard() {
           <div className="flex items-center lg:space-x-4 space-x-2">
             <Avatar className="lg:h-28 lg:w-28 h-20 w-20">
               <AvatarImage
-                src={formData?.image || "/placeholder.svg"}
+                src={formData?.image}
                 alt={formData?.name}
               />
               <AvatarFallback className="subtitleText">
