@@ -52,6 +52,7 @@ export default function UserDashboard() {
         // Upload compressed image
         const result = await postSingleImage({ image: compressedFile });
         imageUrl = result?.data.image || result;
+        console.log("Upload result:", result);
       } catch (error) {
         console.error("Image compression failed:", error);
         toast("Failed to compress image");
