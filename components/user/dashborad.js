@@ -1,33 +1,37 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Mail, MapPin, Phone, User, Edit3, Save, X } from "lucide-react"
-import { useUser } from "@/app/context/user"
-import { postSingleImage, updateUser } from "@/app/helper/backend"
-import toast from "react-hot-toast"
-import CustomForm from "../commons/CustomForm"
-import { UserDashboardSkeleton } from "../skeletons/skeletons"
-import MultipleImageInput from "../commons/multipleImageInput"
-import imageCompression from 'browser-image-compression';
-
+import { useEffect, useState } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Mail, MapPin, Phone, User, Edit3, Save, X } from "lucide-react";
+import { useUser } from "@/app/context/user";
+import { postSingleImage, updateUser } from "@/app/helper/backend";
+import toast from "react-hot-toast";
+import CustomForm from "../commons/CustomForm";
+import { UserDashboardSkeleton } from "../skeletons/skeletons";
+import MultipleImageInput from "../commons/multipleImageInput";
+import imageCompression from "browser-image-compression";
 
 export default function UserDashboard() {
-  const [isEditing, setIsEditing] = useState(false)
+  const [isEditing, setIsEditing] = useState(false);
   const { user, userLoading, getUser } = useUser();
 
-  const [formData, setFormData] = useState({})
-
+  const [formData, setFormData] = useState({});
 
   useEffect(() => {
     if (user) {
-      setFormData(user)
+      setFormData(user);
     }
-  }, [user])
+  }, [user]);
 
   const handleSave = async () => {
     let imageUrl = formData.image;
@@ -36,12 +40,14 @@ export default function UserDashboard() {
       try {
         let file = imageUrl.originFileObj;
 
+        // Ensure it's a File instance
         if (!(file instanceof File)) {
           file = new File([file], file.name || "upload.png", {
             type: file.type || "image/png",
           });
         }
 
+        // Compression options
         const options = {
           maxSizeMB: 0.1, // ~100KB
           maxWidthOrHeight: 1200,
@@ -54,14 +60,15 @@ export default function UserDashboard() {
 
         // Upload compressed file
         const result = await postSingleImage({ image: compressedFile });
+        console.log("Upload result:", result);
 
         // ✅ Force imageUrl to be string
         imageUrl =
           typeof result?.data?.image === "string"
             ? result.data.image
             : typeof result === "string"
-              ? result
-              : "";
+            ? result
+            : "";
       } catch (err) {
         console.error("Image compression error:", err);
         toast.error("Failed to compress image");
@@ -83,24 +90,22 @@ export default function UserDashboard() {
   };
 
   const handleCancel = () => {
-    setFormData(user)
-    setIsEditing(false)
-  }
+    setFormData(user);
+    setIsEditing(false);
+  };
 
   if (userLoading && Object.keys(user).length === 0) {
-    return <UserDashboardSkeleton />
+    return <UserDashboardSkeleton />;
   }
 
   const fields = [
-
     {
       name: "old_password",
       title: "Old Password*",
       placeholder: "Enter old password",
       variant: "input",
       type: "password",
-      className:
-        "textColor subtitleText",
+      className: "textColor subtitleText",
     },
     {
       name: "password",
@@ -108,8 +113,7 @@ export default function UserDashboard() {
       placeholder: "Enter password",
       variant: "input",
       type: "password",
-      className:
-        "textColor subtitleText",
+      className: "textColor subtitleText",
     },
     {
       name: "confirm_password",
@@ -117,8 +121,7 @@ export default function UserDashboard() {
       placeholder: "Enter conform password",
       variant: "input",
       type: "password",
-      className:
-        "textColor subtitleText",
+      className: "textColor subtitleText",
     },
   ];
 
@@ -129,16 +132,13 @@ export default function UserDashboard() {
         <div className="bg-white rounded-lg shadow-sm lg:p-6 p-3">
           <div className="flex items-center lg:space-x-4 space-x-2">
             <Avatar className="lg:h-28 lg:w-28 h-20 w-20">
-              <AvatarImage
-                src={formData?.image}
-                alt={formData?.name}
-              />
+              <AvatarImage src={formData?.image} alt={formData?.name} />
               <AvatarFallback className="subtitleText">
                 {formData?.name
                   ? formData.name
-                    .split(" ")
-                    .map((n) => n[0])
-                    .join("")
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")
                   : "U"}
               </AvatarFallback>
             </Avatar>
@@ -210,7 +210,9 @@ export default function UserDashboard() {
                           : [formData.image]
                         : []
                     }
-                    onChange={(imgs) => setFormData({ ...formData, image: imgs[0] || "" })}
+                    onChange={(imgs) =>
+                      setFormData({ ...formData, image: imgs[0] || "" })
+                    }
                   />
                 </div>
               )}
