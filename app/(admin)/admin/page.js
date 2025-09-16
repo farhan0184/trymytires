@@ -19,6 +19,7 @@ import {
 
 export default function DashboardPage() {
   const [data, getData, { loading }] = useFetch(fetchDashboard, {});
+  console.log(data)
 
   // 📌 Set current year & month on first load
   const currentYear = new Date().getFullYear();

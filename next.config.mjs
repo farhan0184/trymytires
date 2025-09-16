@@ -4,9 +4,9 @@ const nextConfig = {
     backend_url:
       process.env.NODE_ENV === "production"
         ? "https://tire-hunt-expressjs.vercel.app/"
-        : // "https://tire-hunt-expressjs.vercel.app/"
+        : "https://tire-hunt-expressjs.vercel.app/",
           // : "https://backend.trymytires.com/",
-          "http://localhost:8482/",
+          // "http://localhost:8482/",
     socket_url:
       process.env.NODE_ENV === "production"
         ? "https://tire-hunt-expressjs.vercel.app/"
