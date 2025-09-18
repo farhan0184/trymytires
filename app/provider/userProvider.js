@@ -4,8 +4,12 @@ import UserContext from "../context/user";
 import { fetchUser } from "../helper/backend";
 import { usePathname, useRouter } from "next/navigation";
 
-
-const authPaths = ["/sign-in", "/sign-up", "/reset-password", "/forgot-password"];
+const authPaths = [
+  "/sign-in",
+  "/sign-up",
+  "/reset-password",
+  "/forgot-password",
+];
 
 const UserProviders = ({ children }) => {
   const [active, setActive] = useState("dashboard");
@@ -37,27 +41,34 @@ const UserProviders = ({ children }) => {
   useEffect(() => {
     if (userLoading) return;
 
-    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+    const token =
+      typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
-    if (user?.role) {
-      if (user.role === "admin" && path.startsWith("/user")) {
-        router.replace("/admin");
-        return;
-      }
-      if (user.role === "user" && path.startsWith("/admin")) {
-        router.replace("/user");
-        return;
-      }
+    // 🚀 Role-based redirects
+    if (user?.role === "admin" && path.startsWith("/user")) {
+      if (path !== "/admin") router.replace("/admin");
+      return;
+    }
+    if (user?.role === "user" && path.startsWith("/admin")) {
+      if (path !== "/user") router.replace("/user");
+      return;
     }
 
+    // 🚀 If signed-in, block access to ALL auth pages
     if (token && authPaths.includes(path)) {
       const redirectPath = user?.role === "admin" ? "/admin" : "/user";
-      router.replace(redirectPath);
+      if (path !== redirectPath) {
+        router.replace(redirectPath);
+      }
     }
   }, [user, userLoading, path, router]);
 
   if (userLoading) {
-    return <div className="flex items-center justify-center h-screen">Loading...</div>;
+    return (
+      <div className="flex items-center justify-center h-screen">
+        Loading...
+      </div>
+    );
   }
 
   return (
