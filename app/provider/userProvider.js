@@ -1,9 +1,9 @@
-'use client';
+"use client";
 import React, { useCallback, useEffect, useState } from "react";
 import UserContext from "../context/user";
 import { fetchUser } from "../helper/backend";
-import { usePathname } from "next/navigation";
-import toast from "react-hot-toast";
+import { usePathname, useRouter } from "next/navigation";
+
 
 const authPaths = ["/sign-in", "/sign-up", "/reset-password", "/forgot-password"];
 
@@ -12,46 +12,53 @@ const UserProviders = ({ children }) => {
   const [userLoading, setUserLoading] = useState(true);
   const [user, setUser] = useState({});
   const path = usePathname();
+  const router = useRouter();
 
   const getUser = useCallback(async () => {
-    setUserLoading(true);
-    const { data, error } = await fetchUser();
-    if (!error) {
-      setUser(data);
-    } else {
+    try {
+      setUserLoading(true);
+      const { data, error } = await fetchUser();
+      if (!error) {
+        setUser(data);
+      } else {
+        setUser({});
+      }
+    } catch (err) {
       setUser({});
+    } finally {
+      setUserLoading(false);
     }
-    setUserLoading(false);
   }, []);
 
   useEffect(() => {
     getUser();
   }, [getUser]);
 
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
-
   useEffect(() => {
-    if (!userLoading && user?.role) {
-      if (user.role === "admin" && path.startsWith("/user")) {
-        window.location.href = "/admin";
-      } else if (user.role === "user" && path.startsWith("/admin")) {
-        window.location.href = "/user";
-      }
+    if (userLoading) return;
 
-      if (token && authPaths.includes(path)) {
-        const redirectPath = user?.role === "admin" ? "/admin" : "/user";
-        window.location.href = redirectPath;
+    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+
+    if (user?.role) {
+      if (user.role === "admin" && path.startsWith("/user")) {
+        router.replace("/admin");
+        return;
+      }
+      if (user.role === "user" && path.startsWith("/admin")) {
+        router.replace("/user");
+        return;
       }
     }
-  }, [user, userLoading, path, token]);
 
-  const isRedirecting =
-    userLoading ||
-    (user?.role === "admin" && path.startsWith("/user")) ||
-    (user?.role === "user" && path.startsWith("/admin")) ||
-    (token && authPaths.includes(path));
+    if (token && authPaths.includes(path)) {
+      const redirectPath = user?.role === "admin" ? "/admin" : "/user";
+      router.replace(redirectPath);
+    }
+  }, [user, userLoading, path, router]);
 
-  if (isRedirecting) return null;
+  if (userLoading) {
+    return <div className="flex items-center justify-center h-screen">Loading...</div>;
+  }
 
   return (
     <UserContext.Provider
