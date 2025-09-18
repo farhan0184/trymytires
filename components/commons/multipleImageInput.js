@@ -116,8 +116,15 @@ const FileUploadInput = ({ value, onChange, max, child, name }) => {
 
   const handleFiles = (filesList) => {
     if (typeof onChange !== "function") return;
+    const maxSize = 1024 * 1024;
 
-    const newFiles = Array.from(filesList).slice(0, max - (value?.length || 0));
+    const newFiles = Array.from(filesList).slice(0, max - (value?.length || 0)).filter((file) => {
+      if (file.size > maxSize) {
+        toast.error(`${file.name} exceeds 1MB size limit`);
+        return false;
+      }
+      return true;
+    });
     const fileObjects = newFiles.map((file, index) => ({
       uid: `${Date.now()}-${index}`,
       name: file.name,

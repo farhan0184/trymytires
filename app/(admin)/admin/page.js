@@ -168,15 +168,15 @@ export default function DashboardPage() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 py-10 place-items-center">
               <div className="space-y-1 text-center">
                 <p className="subtitleText font-semibold ">Tries</p>
-                <p className="subtitleText">{data?.orders?.tires}</p>
+                <p className="subtitleText">{data?.orders?.tires??0}</p>
               </div>
               <div className="space-y-1 text-center">
                 <p className="subtitleText font-semibold">Wheels</p>
-                <p className="subtitleText">{data?.orders?.wheels}</p>
+                <p className="subtitleText">{data?.orders?.wheels??0}</p>
               </div>
               <div className="space-y-1 text-center">
                 <p className="subtitleText font-semibold ">Accessories</p>
-                <p className="subtitleText">{data?.orders?.accessories}</p>
+                <p className="subtitleText">{data?.orders?.accessories??0}</p>
               </div>
             </div>
           </CardContent>
@@ -243,7 +243,7 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent>
               <div className="w-full h-80">
-                <ResponsiveContainer width="100%" height="100%">
+                {data?.week &&(<ResponsiveContainer width="100%" height="100%">
                   <BarChart data={data.week}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="day" />
@@ -252,7 +252,7 @@ export default function DashboardPage() {
                     <Bar dataKey="count" fill="#8884d8" name="Orders" />
                     <Bar dataKey="totalRevenue" fill="#82ca9d" name="Revenue" />
                   </BarChart>
-                </ResponsiveContainer>
+                </ResponsiveContainer>)}
               </div>
             </CardContent>
           </Card>
@@ -266,7 +266,7 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent>
               <div className="w-full h-80">
-                <ResponsiveContainer width="100%" height="100%">
+                {data?.month && (<ResponsiveContainer width="100%" height="100%">
                   <BarChart data={data.month}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="day" />
@@ -275,7 +275,7 @@ export default function DashboardPage() {
                     <Bar dataKey="count" fill="#8884d8" name="Orders" />
                     <Bar dataKey="totalRevenue" fill="#82ca9d" name="Revenue" />
                   </BarChart>
-                </ResponsiveContainer>
+                </ResponsiveContainer>)}
               </div>
             </CardContent>
           </Card>
@@ -289,7 +289,7 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent>
               <div className="w-full h-80">
-                <ResponsiveContainer width="100%" height="100%">
+                {data?.year && (<ResponsiveContainer width="100%" height="100%">
                   <BarChart data={data.year}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="month" />
@@ -298,7 +298,7 @@ export default function DashboardPage() {
                     <Bar dataKey="count" fill="#8884d8" name="Orders" />
                     <Bar dataKey="totalRevenue" fill="#82ca9d" name="Revenue" />
                   </BarChart>
-                </ResponsiveContainer>
+                </ResponsiveContainer>)}
               </div>
             </CardContent>
           </Card>

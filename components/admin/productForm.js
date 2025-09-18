@@ -423,6 +423,8 @@ export default function ProductForm({ defaultValues = {} }) {
     values.images = await handleImageUpload(values.images, false);
     values.thumbnail_image = await handleImageUpload(values.thumbnail_image, true);
 
+    // console.log("Final values before submit:", values.thumbnail_image);
+
     // Add ID for updates
     if (defaultValues?.productId) {
       values._id = defaultValues._id;

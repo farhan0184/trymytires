@@ -7,7 +7,7 @@ import { useFetch } from "../helper/hooks";
 import { fetchPageData } from "../helper/backend";
 import HomepageSkeleton from "@/components/loading/homeSkeleton";
 
-export default function Home() {
+export default function HomePage() {
   const [data, getData, {loading}] = useFetch(fetchPageData, {slug:"home_page"})
 
 

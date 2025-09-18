@@ -40,8 +40,8 @@ export default function ProductPage() {
     const loadOptions = async () => {
       const [catRes, brandRes, typeRes] = await Promise.all([
         fetchProductCategories(),
-        fetchProductBrands(),
-        fetchProductTypes(),
+        fetchProductBrands({limit:100}),
+        fetchProductTypes({limit:100}),
       ]);
       setCategories(catRes?.data?.docs || []);
       setBrands(brandRes?.data?.docs || []);
@@ -197,6 +197,8 @@ export default function ProductPage() {
       <span>Add New</span>
     </Button>
   );
+
+  console.log("brand", brands)
 
   return (
     <DataTable

@@ -31,7 +31,16 @@ export default function Product({data}) {
     return (
       <Card className="w-full lg:mx-0 shadow-lg border-2 gap-2 border-[#C6C6C6] rounded-lg" >
         <CardHeader className="text-center px-3 pt-3 pb-0">
-          <div className="w-full h-auto mx-auto border-b-2 border-gray-200 cursor-pointer" onClick={() => router.push(`/products/${data._id}`)}>
+          <div className="w-full h-auto mx-auto border-gray-200 cursor-pointer" onClick={() => router.push(`/products/${data._id}`)}>
+            {data?.brand?.image ? <Image
+              src={data?.brand?.image}
+              alt={data?.name || "Product Image"}
+              width={200}
+              height={400}
+              className="mx-auto h-[50px] w-[60%] px-1"
+            />: <div className="mx-auto h-[50px] w-[60%] px-1 bg-white">
+              
+              </div>}
             <Image
               src={
                 data?.thumbnail_image?.trim()
@@ -39,25 +48,19 @@ export default function Product({data}) {
                   : "https://via.placeholder.com/150"
               }
               alt={data?.name || "Product Image"}
-              width={1000}
-              height={1000}
+              width={500}
+              height={500}
               className="mx-auto h-full w-full px-1"
             />
           </div>
         </CardHeader>
-        <CardContent className="text-center px-3">
+        <CardContent className="text-center p-3 border-t-2 border-gray-200">
           <CardTitle className="primaryText font-bold text-gray-900">
             {data?.name?.length > 20
               ? `${data?.name?.substring(0, 20)}...`
               : data?.name}
           </CardTitle>
-          <div className="flex justify-center my-3">
-            {renderStars(data?.rating || 5)}
-            {/* <span className="ml-2 text-sm text-gray-500">
-              ({data.reviews || 9})
-            </span> */}
-          </div>
-          <div className="text-gray-600 invoiceText  border-b-2 border-t-2 border-gray-200 h-14 flex items-center justify-center"
+          <div className="text-gray-600 invoiceText  border-b-2  border-gray-200 h-14 flex items-center justify-center"
             dangerouslySetInnerHTML={{
             __html: columnFormatter(data?.description, langCode, 80)}}
           >

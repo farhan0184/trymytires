@@ -25,11 +25,13 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import toast from "react-hot-toast";
+import { useUser } from "../context/user";
 
 export default function AdminLayout({ children }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
   const pathname = usePathname();
+  
 
   const routes = [
     {

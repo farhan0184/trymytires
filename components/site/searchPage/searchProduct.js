@@ -46,7 +46,7 @@ export default function SearchProduct({
     } else {
       clear();
     }
-  }, [searchParams.toString()]);
+  }, [searchParams]);
 
   const handleQuantityChange = (increment) => {
     setQuantity(Math.max(1, quantity + increment));

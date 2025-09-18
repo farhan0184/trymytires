@@ -28,30 +28,30 @@ const UserProviders = ({ children }) => {
     getUser();
   }, [getUser]);
 
-  // const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
-  // useEffect(() => {
-  //   if (!userLoading && user?.role) {
-  //     if (user.role === "admin" && path.startsWith("/user")) {
-  //       window.location.href = "/admin";
-  //     } else if (user.role === "user" && path.startsWith("/admin")) {
-  //       window.location.href = "/user";
-  //     }
+  useEffect(() => {
+    if (!userLoading && user?.role) {
+      if (user.role === "admin" && path.startsWith("/user")) {
+        window.location.href = "/admin";
+      } else if (user.role === "user" && path.startsWith("/admin")) {
+        window.location.href = "/user";
+      }
 
-  //     if (token && authPaths.includes(path)) {
-  //       const redirectPath = user?.role === "admin" ? "/admin" : "/user";
-  //       window.location.href = redirectPath;
-  //     }
-  //   }
-  // }, [user, userLoading, path, token]);
+      if (token && authPaths.includes(path)) {
+        const redirectPath = user?.role === "admin" ? "/admin" : "/user";
+        window.location.href = redirectPath;
+      }
+    }
+  }, [user, userLoading, path, token]);
 
-  // const isRedirecting =
-  //   userLoading ||
-  //   (user?.role === "admin" && path.startsWith("/user")) ||
-  //   (user?.role === "user" && path.startsWith("/admin")) ||
-  //   (token && authPaths.includes(path));
+  const isRedirecting =
+    userLoading ||
+    (user?.role === "admin" && path.startsWith("/user")) ||
+    (user?.role === "user" && path.startsWith("/admin")) ||
+    (token && authPaths.includes(path));
 
-  // if (isRedirecting) return null;
+  if (isRedirecting) return null;
 
   return (
     <UserContext.Provider

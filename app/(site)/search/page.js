@@ -33,23 +33,23 @@ export default function SearchPage() {
 
   let { frontWheels } = useVehicle();
   const [vinData, setVinData] = useState(null)
-  
 
 
 
+  const [openFilter, setOpenFilter] = useState(false);
 
 
   const [dataRefinements, getDataRefinements, { loadingRefinements }] =
     useFetch(productSearchRefinements, {
-      search: search,
-    });
+      search: search, 
+    }, !!search);
 
-  const [openFilter, setOpenFilter] = useState(false);
+
   const [
     productData,
     getproductData,
     { loading: productLoading, clear: productClear },
-  ] = useFetch(productSearch, {}, false);
+  ] = useFetch(productSearch, {}, !!search);
 
   const updateQuantity = (id, newQuantity) => {
     if (newQuantity < 1) return;
@@ -137,7 +137,7 @@ export default function SearchPage() {
             <tbody>
               {vinData && (
                 <tr
-                 
+
                   className="hover:bg-gray-50 border-b border-t border-gray-200 subtitleText"
                 >
                   <td className="px-6 py-4 whitespace-nowrap border-r  font-semibold text-gray-900 uppercase">

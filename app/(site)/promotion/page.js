@@ -6,62 +6,54 @@ import { useI18n } from '@/app/provider/i18nProvider';
 import PromotionCard from '@/components/site/promotion/card';
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
+import { Skeleton } from '@/components/ui/skeleton';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react'
-const data = [
-    {
-        id: 1,
-        image: "/single_tire.png?height=200&width=200",
-        title: "BR 001203",
-        subtitle:
-            "Closeout on BRIDGESTONE ALENZA AS ULTRA 295/40R21 while supplies last ",
-        discountedDate: "2024-06-30",
-        daysDiscount: "30% ",
-        days: "Monday",
-    },
-    {
-        id: 2,
-        image: "/single_tire.png?height=200&width=200",
-        title: "Goodyear SPORT",
-        subtitle:
-            "Closeout on BRIDGESTONE ALENZA AS ULTRA 295/40R21 while supplies last ",
-        discountedDate: "2024-07-15",
-        daysDiscount: "50% ",
-        days: "Tuesday",
-    },
-    {
-        id: 3,
-        image: "/single_tire.png?height=200&width=200",
-        title: "Car & Jeep Special",
-        subtitle:
-            "Closeout on BRIDGESTONE ALENZA AS ULTRA 295/40R21 while supplies last ",
-        discountedDate: "2024-07-20",
-        daysDiscount: "25% ",
-        days: "Wednesday",
-    },
-    {
-        id: 4,
-        image: "/single_tire.png?height=200&width=200",
-        title: "Sports Car",
-        subtitle:
-            "Closeout on BRIDGESTONE ALENZA AS ULTRA 295/40R21 while supplies last",
-        discountedDate: "2024-08-01",
-        daysDiscount: "40%",
-        days: "Thursday",
-    }
-];
+function PromotionSkeleton() {
+  return (
+    <div className="container mx-auto pb-10">
+      <div className="flex lg:flex-row flex-col lg:gap-10 gap-5">
+        {/* Grid Items */}
+        <div className="lg:w-[70%] w-full grid lg:grid-cols-2 gap-5 order-2">
+          {[1, 2, 3, 4].map((idx) => (
+            <Card key={idx} className="p-5">
+              <CardContent className="flex flex-col items-center justify-center space-y-3">
+                <Skeleton className="w-full h-[150px] rounded-md" />
+                <Skeleton className="h-4 w-3/4" />
+                <Skeleton className="h-3 w-1/2" />
+                <Skeleton className="h-8 w-24 rounded-md" />
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Highlight Card */}
+        <Card className="relative lg:w-[30%] w-full p-5 overflow-hidden order-1">
+          <CardContent className="flex flex-col items-center justify-center text-center space-y-4">
+            <Skeleton className="absolute top-4 right-10 w-[80px] h-[40px] rounded-md" />
+            <Skeleton className="w-[200px] h-[200px] rounded-md" />
+            <Skeleton className="h-5 w-3/4" />
+            <Skeleton className="h-3 w-2/3" />
+            <Skeleton className="h-3 w-1/2" />
+            <Skeleton className="h-8 w-28 rounded-md" />
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
 
 export default function Promotion() {
     const router = useRouter();
-    const {langCode} = useI18n()
+    const {t,langCode} = useI18n()
 
     const [promotionData, setPromotionData, { loading }] = useFetch(fetchPromotionProductsByCategory)
 
 
 
     if (loading) {
-        return <div>Loading...</div>
+        return <PromotionSkeleton/>
     }
 
 
@@ -118,8 +110,11 @@ export default function Promotion() {
                             <h2 className="uppercase primaryText font-bold italic text-black mt-4">{firstTire.name}</h2>
 
                             {/* Description */}
-                            <p className="text-xs md:text-base mt-1 text-black uppercase italic">
-                                {columnFormatter(firstTire.description, langCode)}
+                            <p className="text-xs md:text-base mt-1 text-black uppercase italic"
+                                dangerouslySetInnerHTML={{
+                                __html: columnFormatter(firstTire.description, langCode, 100)}}
+                            >
+                               
                             </p>
 
                             {/* Sale End */}
@@ -129,7 +124,7 @@ export default function Promotion() {
 
                             {/* Button */}
                             <Button onClick={() => router.push(`/products/${firstTire?._id}`)} className="mt-4 px-5 py-2  text-xs md:text-base rounded-md text-white" >
-                                SHOW ITEM
+                                {t("Show Items").toUpperCase()}
                             </Button>
                         </CardContent>
                         <div className='absolute bottom-0 bg-gradient-to-b from-white to-[#FF855D] w-full h-[60%] z-0'>
@@ -177,8 +172,8 @@ export default function Promotion() {
                             <h2 className="uppercase primaryText font-bold italic text-black mt-4">{firstWheel?.name}</h2>
 
                             {/* Description */}
-                            <p className="text-xs md:text-base mt-1 text-black uppercase italic px-5">
-                                {columnFormatter(firstWheel?.description, langCode, 100)}
+                            <p className="text-xs md:text-base mt-1 text-black uppercase italic px-5" 
+                                dangerouslySetInnerHTML={{ __html: columnFormatter(firstWheel?.description, langCode, 100) }}>
                             </p>
 
                             {/* Sale End */}
@@ -188,7 +183,7 @@ export default function Promotion() {
 
                             {/* Button */}
                             <Button onClick={() => router.push(`/products/${firstWheel?._id}`)} className="mt-4 px-5 py-2 lg:mb-0 mb-10 text-xs md:text-base rounded-md text-white" >
-                                SHOW ITEM
+                                {t("Show Items").toUpperCase()}
                             </Button>
                         </CardContent>
                         <div className='absolute bottom-0 bg-gradient-to-b from-white to-[#FF855D] w-full h-[60%] z-0'>
@@ -234,8 +229,9 @@ export default function Promotion() {
                             <h2 className="uppercase primaryText font-bold italic text-black mt-4">{accessories?.name}</h2>
 
                             {/* Description */}
-                            <p className="text-xs md:text-base mt-1 text-black uppercase italic">
-                               {columnFormatter(accessories?.description, langCode)}
+                            <p className="text-xs md:text-base mt-1 text-black uppercase italic"
+                                dangerouslySetInnerHTML={{ __html: columnFormatter(accessories?.description, langCode, 100) }}>
+                              
                             </p>
 
                             {/* Sale End */}
@@ -245,7 +241,7 @@ export default function Promotion() {
 
                             {/* Button */}
                             <Button onClick={() => router.push(`/products/${accessories?._id}`)} className="mt-4 px-5 py-2 lg:mb-0 mb-10 text-xs md:text-base rounded-md text-white" >
-                                SHOW ITEM
+                                {t("Show Items").toUpperCase()}
                             </Button>
                         </CardContent>
                         <div className='absolute bottom-0 bg-gradient-to-b from-white to-[#FF855D] w-full h-[60%] z-0'>
