@@ -61,7 +61,7 @@ const UserProviders = ({ children }) => {
         router.replace(redirectPath);
       }
     }
-  }, [user, userLoading, path, router]);
+  }, [user]);
 
   if (userLoading) {
     return (
