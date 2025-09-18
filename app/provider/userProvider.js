@@ -34,7 +34,7 @@ const UserProviders = ({ children }) => {
     }
   }, []);
 
-  
+ 
 
   useEffect(() => {
     if (userLoading) return;
@@ -59,7 +59,7 @@ const UserProviders = ({ children }) => {
         router.replace(redirectPath);
       }
     }
-  }, [path]);
+  }, [user, userLoading, path, router]);
 
   if (userLoading) {
     return (
