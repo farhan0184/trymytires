@@ -59,7 +59,7 @@ export default function Product({data}) {
           </div>
           <div className="text-gray-600 invoiceText  border-b-2 border-t-2 border-gray-200 h-14 flex items-center justify-center"
             dangerouslySetInnerHTML={{
-                                    __html: columnFormatter(data?.description, langCode, 80)}}
+            __html: columnFormatter(data?.description, langCode, 80)}}
           >
             
             

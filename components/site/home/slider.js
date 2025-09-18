@@ -84,6 +84,7 @@ export function Slider({ images }) {
                       height={2000}
                       alt="Picture of the author"
                       className="w-full h-[60lvh] md:h-full object-cover"
+                      // unoptimized
                     />
                   </div>
                 </CardContent>

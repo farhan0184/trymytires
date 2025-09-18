@@ -11,15 +11,12 @@ const Hero = ({ image, slider_images }) => {
         </div>
         <div className="flex-[2] p-10 md:p-0 ">
           <Image
-            // onClick={()=> window.location.href='/finance'}
             src={image}
             width={1000}
             height={1000}
             alt="Picture of the author"
-            className="w-full h-full "
+            className="w-full h-full"
             loading="lazy"
-            placeholder="blur"
-            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA..."
           />
         </div>
       </div>
