@@ -36,7 +36,7 @@ const UserProviders = ({ children }) => {
 
   useEffect(() => {
     getUser();
-  }, [getUser]);
+  }, []);
 
   useEffect(() => {
     if (userLoading) return;
