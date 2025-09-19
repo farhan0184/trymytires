@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   Users,
@@ -31,6 +31,7 @@ export default function AdminLayout({ children }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
   const pathname = usePathname();
+  const router = useRouter()
   
 
   const routes = [
@@ -255,7 +256,7 @@ export default function AdminLayout({ children }) {
                 onClick={() => {
                   localStorage.removeItem("token");
                   toast.success("Logged out successfully");
-                  window.location.href = "/sign-in";
+                  router.push("/sign-in")
                 }}
               >
                 <LogOut className="h-4 w-4" />
@@ -295,7 +296,7 @@ export default function AdminLayout({ children }) {
               onClick={() => {
                 localStorage.removeItem("token");
                 toast.success("Logged out successfully");
-                window.location.href = "/sign-in";
+                router.push("/sign-in")
               }}
             >
               <LogOut className="size-6" />

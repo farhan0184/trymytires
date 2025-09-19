@@ -191,7 +191,7 @@ export const handleUpdatePassword = async (formData, setLoading, navigate) => {
     if (success) {
       toast.success(message);
       localStorage.removeItem("token");
-      window.location.href = "/sign-in";
+      navigate.push("/sign-in")
     } else {
       toast.error(errorMessage);
     }

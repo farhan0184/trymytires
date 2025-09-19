@@ -44,6 +44,7 @@ export default function AccountLayout({
   const contentRef = useRef(null)
   const containerRef = useRef(null)
   const { user, userLoading, getUser } = useUser();
+  const router =useRouter()
 
   useEffect(()=>{
     if(!user){
@@ -93,14 +94,14 @@ export default function AccountLayout({
 
   // Show loading state AFTER all hooks have been called
    if (!userLoading && (!user || Object.keys(user).length === 0)) {
-    window.location.href = "/sign-in";
+    router.push("/sign-in")
   }
 
   // Logout handler function
   const handleLogout = () => {
     localStorage.removeItem("token");
     toast.success("Logged out successfully");
-    window.location.href = "/sign-in";
+    router.push("/sign-in")
   }
 
   // Sidebar content component to avoid duplication
