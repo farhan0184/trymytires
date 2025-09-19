@@ -118,7 +118,7 @@ export default function NavBar() {
     if (action === "logout") {
       localStorage.removeItem("token");
       toast.success(t("Logged Out Successfully"));
-      router.push("/sign-in");
+      window.location.href = "/sign-in"
     } else if (action === "profile") {
       router.push(user?.role === "admin" ? "/admin" : "/user");
     }
@@ -278,7 +278,7 @@ export default function NavBar() {
                   </DropdownMenuContent>
                 </DropdownMenu>
               ) : (
-                <button onClick={() => router.push("/sign-in")} className="btnGradient cursor-pointer text-white rounded w-42 h-12 italic primaryText font-bold flex items-center justify-center gap-2">
+                <button onClick={() => window.location.href = "/sign-in"} className="btnGradient cursor-pointer text-white rounded w-42 h-12 italic primaryText font-bold flex items-center justify-center gap-2">
                   {t("LOGIN")}
                 </button>
               )}
@@ -413,7 +413,7 @@ export default function NavBar() {
                   className="lg:hidden block btnGradient cursor-pointer text-white rounded w-42 h-12 italic primaryText font-bold"
                   func={() => {
                     setMobileMenuOpen(false);
-                    router.push("/sign-in");
+                    window.location.href = "/sign-in"
                   }}
                   child={userLoading ? "..." : t("LOGIN")}
                 />

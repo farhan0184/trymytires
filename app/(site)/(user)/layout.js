@@ -94,14 +94,14 @@ export default function AccountLayout({
 
   // Show loading state AFTER all hooks have been called
    if (!userLoading && (!user || Object.keys(user).length === 0)) {
-    router.push("/sign-in")
+    window.location.href = "/sign-in"
   }
 
   // Logout handler function
   const handleLogout = () => {
     localStorage.removeItem("token");
     toast.success("Logged out successfully");
-    router.push("/sign-in")
+    window.location.href = "/sign-in"
   }
 
   // Sidebar content component to avoid duplication

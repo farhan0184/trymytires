@@ -32,7 +32,7 @@ export default function AdminLayout({ children }) {
   const [openDropdown, setOpenDropdown] = useState(null);
   const pathname = usePathname();
   const router = useRouter()
-  
+
 
   const routes = [
     {
@@ -256,7 +256,7 @@ export default function AdminLayout({ children }) {
                 onClick={() => {
                   localStorage.removeItem("token");
                   toast.success("Logged out successfully");
-                  router.push("/sign-in")
+                  window.location.href = "/sign-in"
                 }}
               >
                 <LogOut className="h-4 w-4" />
@@ -296,7 +296,7 @@ export default function AdminLayout({ children }) {
               onClick={() => {
                 localStorage.removeItem("token");
                 toast.success("Logged out successfully");
-                router.push("/sign-in")
+                window.location.href = "/sign-in"
               }}
             >
               <LogOut className="size-6" />

@@ -182,7 +182,7 @@ export default function SearchProduct({
                     </div>
                     <Button
                       onClick={async () => {
-                        if (!user) return router.push("/sign-in");
+                        if (!user) return window.location.href = "/sign-in";
                         const cart = { product: item._id, quantity };
                         const { success, message: msg } = await addtoCart(cart);
                         if (success) {
@@ -229,7 +229,7 @@ export default function SearchProduct({
                     </div>
                     <Button
                       onClick={async () => {
-                        if (!user) return router.push("/sign-in");
+                        if (!user) return window.location.href = "/sign-in";
                         const cart = { product: item._id, quantity };
                         const { success, message: msg } = await addtoCart(cart);
                         if (success) {
