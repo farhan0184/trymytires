@@ -50,14 +50,14 @@ export default function AccountLayout({
     if(!user){
       getUser()
     }
-  },[getUser, user])
+  },[user])
 
   // Close sidebar when route changes on mobile
   useEffect(() => {
     if (isMobile) {
       setOpen(false)
     }
-  }, [pathname, isMobile])
+  }, [pathname])
 
   
 
