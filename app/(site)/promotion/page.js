@@ -110,7 +110,7 @@ export default function Promotion() {
                             <h2 className="uppercase primaryText font-bold italic text-black mt-4">{firstTire.name}</h2>
 
                             {/* Description */}
-                            <p className="text-xs md:text-base mt-1 text-black uppercase italic"
+                            <p className="text-xs md:text-base mt-1 text-black uppercase italic px-5"
                                 dangerouslySetInnerHTML={{
                                 __html: columnFormatter(firstTire.description, langCode, 100)}}
                             >
@@ -229,7 +229,7 @@ export default function Promotion() {
                             <h2 className="uppercase primaryText font-bold italic text-black mt-4">{accessories?.name}</h2>
 
                             {/* Description */}
-                            <p className="text-xs md:text-base mt-1 text-black uppercase italic"
+                            <p className="text-xs md:text-base mt-1 text-black uppercase italic px-5"
                                 dangerouslySetInnerHTML={{ __html: columnFormatter(accessories?.description, langCode, 100) }}>
                               
                             </p>

@@ -1,70 +1,52 @@
-"use client";
+'use client';
 import React, { useCallback, useEffect, useState } from "react";
 import UserContext from "../context/user";
 import { fetchUser } from "../helper/backend";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+import toast from "react-hot-toast";
 
-const authPaths = [
-  "/sign-in",
-  "/sign-up",
-  "/reset-password",
-  "/forgot-password",
-];
+const authPaths = ["/sign-in", "/sign-up", "/reset-password", "/forgot-password"];
 
 const UserProviders = ({ children }) => {
   const [active, setActive] = useState("dashboard");
   const [userLoading, setUserLoading] = useState(true);
   const [user, setUser] = useState({});
   const path = usePathname();
-  const router = useRouter();
 
   const getUser = useCallback(async () => {
-    try {
-      setUserLoading(true);
-      const { data, error } = await fetchUser();
-      if (!error) {
-        setUser(data);
-      } else {
-        setUser({});
-      }
-    } catch (err) {
+    setUserLoading(true);
+    const { data, error } = await fetchUser();
+    if (!error) {
+      setUser(data);
+    } else {
       setUser({});
-    } finally {
-      setUserLoading(false);
     }
+    setUserLoading(false);
   }, []);
 
- 
-
   useEffect(() => {
-    if (userLoading) return;
+    getUser();
+  }, [getUser]);
 
-    const token =
-      typeof window !== "undefined" ? localStorage.getItem("token") : null;
-
-    // 🚀 Role-based redirects
-    if (user?.role === "admin" && path.startsWith("/user")) {
-      if (path !== "/admin") router.replace("/admin");
-      return;
-    }
-    if (user?.role === "user" && path.startsWith("/admin")) {
-      if (path !== "/user") router.replace("/user");
-      return;
-    }
-
-    // 🚀 If signed-in, block access to ALL auth pages
-    if (token && authPaths.includes(path)) {
-      const redirectPath = user?.role === "admin" ? "/admin" : "/user";
-      if (path !== redirectPath) {
-        router.replace(redirectPath);
-      }
-    }
-  }, [user, userLoading, path, router]);
-
-  if (userLoading) {
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  
+  // Check if path starts with /admin or /user (including sub-routes)
+  const isProtectedRoute = path.startsWith("/admin") || path.startsWith("/user");
+  
+  if (isProtectedRoute && typeof window !== "undefined" && !token) {
+    window.location.href = '/sign-in';
     return (
-      <div className="flex items-center justify-center h-screen">
-        Loading...
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  // Show loader while user data is being fetched
+  if (userLoading && isProtectedRoute) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
       </div>
     );
   }
