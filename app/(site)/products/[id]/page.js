@@ -126,7 +126,7 @@ export default function TireProductSection() {
                 <button
                   key={index}
                   onClick={() => setSelectedImage(image)}
-                  className={`w-1/3 xl:h-[200px] sm:h-[130px] h-[100px] p-3 rounded bg-[#F6F6F6] overflow-hidden transition-all ${selectedImage === image ? "border border-gray-500" : ""
+                  className={`w-1/4 xl:h-[150px] sm:h-[130px] h-[100px] p-3 rounded bg-[#F6F6F6] overflow-hidden transition-all ${selectedImage === image ? "border border-gray-500" : ""
                     }`}
                 >
                   {image ? (
@@ -142,7 +142,7 @@ export default function TireProductSection() {
                     />
                   ) : (
                     <div className="w-full h-full bg-gray-200 flex items-center justify-center rounded">
-                      <span className="text-gray-400 text-sm">No image</span>
+                      <span className="text-gray-400 text-sm">{t("No image")}</span>
                     </div>
                   )}
                 </button>
@@ -171,7 +171,7 @@ export default function TireProductSection() {
           <hr className="border-[#9A9A9A] mb-0" />
           <div className="subtitleText text-[#191919] mb-0 py-8 ">
             <h4 className="font-semibold">{t("Availability:")}</h4>
-            <p>{t("If ordered by today Delivery by: 24 hours - 3 days (Maximum)<")}</p>
+            <p>{t("If ordered by today Delivery by: 24 hours - 3 days (Maximum)")}</p>
           </div>
           <hr className="border-[#9A9A9A] mt-0" />
           {/* Pricing */}
@@ -266,7 +266,7 @@ export default function TireProductSection() {
             </p>
 
             <p className="text-gray-700 leading-relaxed" dangerouslySetInnerHTML={{
-                        __html: columnFormatter(data?.description, langCode)}}>
+               __html: columnFormatter(data?.description, langCode)}}>
             </p>
           </div>
         </div>
